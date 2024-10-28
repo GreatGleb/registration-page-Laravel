@@ -7,9 +7,6 @@ use App\Models\Position;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Nette\Utils\Image;
-use Symfony\Component\HttpFoundation\File\File;
 
 class RegistrationController extends Controller
 {
@@ -19,9 +16,10 @@ class RegistrationController extends Controller
         $response = [];
         $this->validateFields($request);
 
-
         if(sizeof($this->errors)) {
-            $response['errors'] = $this->errors;
+            $response['success'] = false;
+            $response['message'] = 'Validation failed';
+            $response['fails'] = $this->errors;
         } else {
             $repeatedEmailOrPhoneUser = User::where('email', $request->email)->orWhere('phone', $request->phone)->first();
 
@@ -57,11 +55,11 @@ class RegistrationController extends Controller
     protected function isValidName($name)
     {
         if(empty($name)) {
-            $this->errors[] = 'The name field is required.';
+            $this->errors['name'] = 'The name field is required.';
         } else if(mb_strlen($name) < 2) {
-            $this->errors[] = 'The name must be at least 2 characters.';
+            $this->errors['name'] = 'The name must be at least 2 characters.';
         } else if(mb_strlen($name) > 60) {
-            $this->errors[] = 'The name must be not longer than 60 characters.';
+            $this->errors['name'] = 'The name must be not longer than 60 characters.';
         }
     }
 
@@ -69,9 +67,9 @@ class RegistrationController extends Controller
     {
         $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
         if(empty($email)) {
-            $this->errors[] = 'The email field is required.';
+            $this->errors['email'] = 'The email field is required.';
         } else if(preg_match($pattern, $email) !== 1) {
-            $this->errors[] = 'The email must be a valid email address.';
+            $this->errors['email'] = 'The email must be a valid email address.';
         }
     }
 
@@ -79,20 +77,20 @@ class RegistrationController extends Controller
     {
         $pattern = '/^\+{0,1}380([0-9]{8})$/';
         if(empty($phone)) {
-            $this->errors[] = 'The phone field is required.';
+            $this->errors['phone'] = 'The phone field is required.';
         } else if(preg_match($pattern, $phone) !== 1) {
-            $this->errors[] = 'The phone must be a valid.';
+            $this->errors['phone'] = 'The phone must be a valid.';
         }
     }
 
     protected function isValidPositionId($positionId)
     {
         if(empty($positionId)) {
-            $this->errors[] = 'The position id field is required.';
+            $this->errors['position_id'] = 'The position id field is required.';
         }if(!is_int($positionId)) {
-            $this->errors[] = 'The position id must be an integer.';
+            $this->errors['position_id'] = 'The position id must be an integer.';
         } else if(!Position::where('id', $positionId)->first()) {
-            $this->errors[] = 'The position id not found.';
+            $this->errors['position_id'] = 'The position id not found.';
         }
     }
 
@@ -120,16 +118,16 @@ class RegistrationController extends Controller
 
                         $this->newPhotoPath = Storage::disk('public')->path($imageName);
                     } else {
-                        $this->errors[] = 'Minimum size of photo 70x70px.';
+                        $this->errors['photo'] = 'Minimum size of photo 70x70px.';
                     }
                 } else {
-                    $this->errors[] = 'The photo size must not be greater than 5 Mb.';
+                    $this->errors['photo'] = 'The photo size must not be greater than 5 Mb.';
                 }
             } else {
-                $this->errors[] = 'The photo format must be jpeg/jpg type.';
+                $this->errors['photo'] = 'The photo format must be jpeg/jpg type.';
             }
         } else {
-            $this->errors[] = 'The photo is required.';
+            $this->errors['photo'] = 'The photo is required.';
         }
     }
 
