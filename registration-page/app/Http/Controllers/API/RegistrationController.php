@@ -96,39 +96,42 @@ class RegistrationController extends Controller
 
     protected function validateAndSavePhoto($photo) {
 //      get extension
-        $imageSizes = getimagesize($photo);
-        if($imageSizes) {
-            $mime = (explode('/', $imageSizes['mime']));
-            $type = $mime[0];
-            $extension = $mime[1];
+        if($photo) {
+            $imageSizes = getimagesize($photo);
+            if($imageSizes) {
+                $mime = (explode('/', $imageSizes['mime']));
+                $type = $mime[0];
+                $extension = $mime[1];
 
-            if ($type === 'image' && ($extension === 'jpg' || $extension === 'jpeg')) {
-//          get photo size
-                $imageDecodedBase64 = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photo));
-                $baseTempPath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
-                $tempPath = $baseTempPath . time() . "." . $extension;
-                file_put_contents($tempPath, $imageDecodedBase64);
-                $imageSize = filesize($tempPath);
+                if ($type === 'image' && ($extension === 'jpg' || $extension === 'jpeg')) {
+                    //          get photo size
+                    $imageDecodedBase64 = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photo));
+                    $baseTempPath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
+                    $tempPath = $baseTempPath . time() . "." . $extension;
+                    file_put_contents($tempPath, $imageDecodedBase64);
+                    $imageSize = filesize($tempPath);
 
-                if ($imageSize <= 5 * 1024 * 1024) {
-                    if ($imageSizes[0] >= 70 && $imageSizes[1] >= 70) {
-//                  save photo
-                        $imageName = 'images/' . time() . '.' . $extension;
-                        Storage::disk('public')->put($imageName, $imageDecodedBase64);
+                    if ($imageSize <= 5 * 1024 * 1024) {
+                        if ($imageSizes[0] >= 70 && $imageSizes[1] >= 70) {
+                            //                  save photo
+                            $imageName = 'images/' . time() . '.' . $extension;
+                            Storage::disk('public')->put($imageName, $imageDecodedBase64);
 
-                        $this->newPhotoPath = Storage::disk('public')->path($imageName);
+                            $this->newPhotoPath = Storage::disk('public')->path($imageName);
+                        } else {
+                            $this->errors['photo'] = 'Minimum size of photo 70x70px.';
+                        }
                     } else {
-                        $this->errors['photo'] = 'Minimum size of photo 70x70px.';
+                        $this->errors['photo'] = 'The photo size must not be greater than 5 Mb.';
                     }
                 } else {
-                    $this->errors['photo'] = 'The photo size must not be greater than 5 Mb.';
+                    $this->errors['photo'] = 'The photo format must be jpeg/jpg type.';
                 }
             } else {
-                $this->errors['photo'] = 'The photo format must be jpeg/jpg type.';
+                $this->errors['photo'] = 'The photo is required.';
             }
         } else {
             $this->errors['photo'] = 'The photo is required.';
         }
     }
-
 }
