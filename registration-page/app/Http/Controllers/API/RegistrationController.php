@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Position;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class RegistrationController extends Controller
@@ -39,6 +40,14 @@ class RegistrationController extends Controller
                 $response['success'] = false;
                 $response['message'] = 'User with this phone or email already exist';
             }
+        }
+
+        if($response['success']) {
+            $token = $request->header('Authorization');
+            $tokenId = explode(' ', $token)[1];
+            $tokenId = explode('|', $tokenId)[0];
+
+            DB::table('personal_access_tokens')->where('id', $tokenId)->delete();
         }
 
         return response()->json($response);
