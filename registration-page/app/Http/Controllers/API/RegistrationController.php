@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Position;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -21,10 +22,26 @@ class RegistrationController extends Controller
 
         if(sizeof($this->errors)) {
             $response['errors'] = $this->errors;
+        } else {
+            $repeatedEmailOrPhoneUser = User::where('email', $request->email)->orWhere('phone', $request->phone)->first();
+
+            if(!$repeatedEmailOrPhoneUser) {
+                $newUser = new User();
+                $newUser->name = $request->name;
+                $newUser->email = $request->email;
+                $newUser->phone = $request->phone;
+                $newUser->position_id = $request->position_id;
+                $newUser->photo = $this->newPhotoPath;
+                $newUser->save();
+
+                $response['success'] = true;
+                $response['user_id'] = $newUser->id;
+                $response['message'] = 'New user successfully registered';
+            } else {
+                $response['success'] = false;
+                $response['message'] = 'User with this phone or email already exist';
+            }
         }
-//        else {
-//
-//        }
 
         return response()->json($response);
     }
