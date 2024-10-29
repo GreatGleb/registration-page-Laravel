@@ -41,9 +41,6 @@
                     <a href="{{ route('user', ':id') }}">
                         <img alt="user photo">
                     </a>
-{{--                    <a href="{{ route('user', ':id') }}">--}}
-{{--                        <img src="image/1730212142.jpeg" alt="user photo">--}}
-{{--                    </a>--}}
                 </td>
                 <td class="name">
                     <a href="{{ route('user', ':id') }}">
