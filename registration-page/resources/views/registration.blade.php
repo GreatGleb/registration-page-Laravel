@@ -152,7 +152,7 @@
                     let xhr = new XMLHttpRequest();
 
                     let route = '{{ route('getUser',  ":id") }}'
-]                    route = route.replace(':id', id);
+                    route = route.replace(':id', id);
 
                     xhr.open("GET", route)
                     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
