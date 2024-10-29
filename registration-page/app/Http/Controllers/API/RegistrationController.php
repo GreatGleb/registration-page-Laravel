@@ -121,7 +121,7 @@ class RegistrationController extends Controller
                     //          get photo size
                     $imageDecodedBase64 = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photo));
                     $baseTempPath = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
-                    $tempPath = $baseTempPath . time() . "." . $extension;
+                    $tempPath = $baseTempPath . '/' . time() . "." . $extension;
                     file_put_contents($tempPath, $imageDecodedBase64);
                     $imageSize = filesize($tempPath);
 
