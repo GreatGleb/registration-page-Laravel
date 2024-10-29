@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\RegistrationController;
 use App\Http\Controllers\API\TokenController;
 use App\Http\Controllers\API\PositionsController;
+use App\Http\Controllers\API\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->post('users', [RegistrationController::class, 'index'])->name('register');
 Route::get('token', [TokenController::class, 'index'])->name('token');
 Route::get('positions', [PositionsController::class, 'index'])->name('positions');
+Route::get('users/{id}', [UsersController::class, 'getUser'])->name('getUser');
