@@ -12,7 +12,8 @@ class TokenController extends Controller
 {
     public function index() {
         $user = User::first();
+        
 //      Creating a token without scopes...
-        return $user->createToken('Token Name');
+        return response()->json($user->createToken('Token Name'));
     }
 }
