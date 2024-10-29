@@ -130,7 +130,7 @@ class RegistrationController extends Controller
                             // save photo
                             $imageName = time() . '.' . $extension;
                             $imagePath = 'images/' . $imageName;
-                            Storage::disk('public')->put($imageName, $imageDecodedBase64);
+                            Storage::disk('public')->put($imagePath, $imageDecodedBase64);
 
                             $this->newPhotoPath = '/image/' . $imageName;
                         } else {
