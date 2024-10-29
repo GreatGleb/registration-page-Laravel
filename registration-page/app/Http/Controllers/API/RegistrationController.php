@@ -127,10 +127,12 @@ class RegistrationController extends Controller
 
                     if ($imageSize <= 5 * 1024 * 1024) {
                         if ($imageSizes[0] >= 70 && $imageSizes[1] >= 70) {
+                            $cropedPhoto = \App\Helpers\ImageHandler::cropAlign($tempPath, $imageSizes['mime'], 70, 70);
+
                             // save photo
                             $imageName = time() . '.' . $extension;
                             $imagePath = 'images/' . $imageName;
-                            Storage::disk('public')->put($imagePath, $imageDecodedBase64);
+                            Storage::disk('public')->put($imagePath, $cropedPhoto);
 
                             $this->newPhotoPath = '/image/' . $imageName;
                         } else {
