@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => '+380' . fake()->unique()->numerify('#######'),
-            'photo' => 'C:\xampp\htdocs\registration-page-api\registration-page\storage\app/public\images/1730138565.jpeg',
+            'photo' => '/test-task-api-users/image/1730227754.jpeg',
             'position_id' => fake()->numberBetween(1, 4),
 //            'email_verified_at' => now(),
 //            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
