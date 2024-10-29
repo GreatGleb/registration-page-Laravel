@@ -26,3 +26,4 @@ Route::middleware('auth:sanctum')->post('users', [RegistrationController::class,
 Route::get('token', [TokenController::class, 'index'])->name('token');
 Route::get('positions', [PositionsController::class, 'index'])->name('positions');
 Route::get('users/{id}', [UsersController::class, 'getUser'])->name('getUser');
+Route::get('users/', [UsersController::class, 'getUsers'])->name('getUsers');
