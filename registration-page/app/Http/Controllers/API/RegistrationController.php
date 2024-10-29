@@ -134,6 +134,13 @@ class RegistrationController extends Controller
                             $imagePath = 'images/' . $imageName;
                             Storage::disk('public')->put($imagePath, $cropedPhoto);
 
+//                            optimize photo
+                            \Tinify\setKey(env('Tinify_API_KEY'));
+                            $imageFullPath = Storage::disk('public')->path($imagePath);
+
+                            $source = \Tinify\fromFile($imageFullPath);
+                            $source->toFile($imageFullPath);
+
                             $this->newPhotoPath = '/image/' . $imageName;
                         } else {
                             $this->errors['photo'] = ['Minimum size of photo 70x70px.'];
