@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::middleware('auth:sanctum')->post('users', [RegistrationController::class, 'index'])->name('register');
 Route::get('token', [TokenController::class, 'index'])->name('token');
 Route::get('positions', [PositionsController::class, 'index'])->name('positions');
