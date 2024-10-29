@@ -18,6 +18,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/registration', function () {
+    return view('registration');
+})->name('registration');
+
+Route::get('/users', function () {
+    return view('users');
+})->name('users');
+
+Route::get('/user/{id}', function ($id) {
+    return view('user', ['id' => $id]);
+})->name('user');
+
 Route::get('/image/{filename}', function($filename) {
     $img = Storage::disk('public')->path('images/' . $filename);
 
