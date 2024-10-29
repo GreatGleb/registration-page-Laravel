@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class UsersController extends Controller
 {
     private $errors = [];
+
     public function getUser(Request $request) {
         $response = [];
         $status = 200;
@@ -44,6 +45,7 @@ class UsersController extends Controller
 
         return response()->json($response, $status);
     }
+
     public function getUsers(Request $request) {
         $response = [];
         $status = 200;
@@ -78,7 +80,7 @@ class UsersController extends Controller
             $nextUrl = null;
             $prevUrl = null;
 
-            $linkForGetUsers = $request->header('host') . $request->getBasePath() . '/' . $request->path();
+            $linkForGetUsers = 'https://' . $request->header('host') . $request->getBasePath() . '/' . $request->path();
             $linkParams = [];
             $linkParams['count'] = 'count=' . $count;
 
