@@ -4,7 +4,6 @@ use App\Http\Controllers\API\RegistrationController;
 use App\Http\Controllers\API\TokenController;
 use App\Http\Controllers\API\PositionsController;
 use App\Http\Controllers\API\UsersController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
