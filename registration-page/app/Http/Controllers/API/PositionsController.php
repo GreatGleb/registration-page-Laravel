@@ -9,6 +9,8 @@ class PositionsController extends Controller
 {
     public function index() {
         $response = [];
+        $status = 200;
+
         $positions = Position::all()->toArray();
         if(sizeof($positions)) {
             $response['success'] = true;
@@ -16,8 +18,10 @@ class PositionsController extends Controller
         } else {
             $response['success'] = false;
             $response['message'] = 'Positions not found';
+
+            $status = 404;
         }
 
-        return response()->json($response);
+        return response()->json($response, $status);
     }
 }

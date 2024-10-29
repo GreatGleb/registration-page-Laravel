@@ -17,10 +17,14 @@ class RegistrationController extends Controller
         $response = [];
         $this->validateFields($request);
 
+        $status = 201;
+
         if(sizeof($this->errors)) {
             $response['success'] = false;
             $response['message'] = 'Validation failed';
             $response['fails'] = $this->errors;
+
+            $status = 422;
         } else {
             $repeatedEmailOrPhoneUser = User::where('email', $request->email)->orWhere('phone', $request->phone)->first();
 
@@ -37,6 +41,7 @@ class RegistrationController extends Controller
                 $response['user_id'] = $newUser->id;
                 $response['message'] = 'New user successfully registered';
             } else {
+                $status = 409;
                 $response['success'] = false;
                 $response['message'] = 'User with this phone or email already exist';
             }
@@ -50,7 +55,7 @@ class RegistrationController extends Controller
             DB::table('personal_access_tokens')->where('id', $tokenId)->delete();
         }
 
-        return response()->json($response);
+        return response()->json($response, $status);
     }
 
     protected function validateFields(Request $request) {
@@ -96,7 +101,7 @@ class RegistrationController extends Controller
     {
         if(empty($positionId)) {
             $this->errors['position_id'] = 'The position id field is required.';
-        }if(!is_int($positionId)) {
+        } if(!is_int($positionId)) {
             $this->errors['position_id'] = 'The position id must be an integer.';
         } else if(!Position::where('id', $positionId)->first()) {
             $this->errors['position_id'] = 'The position id not found.';
