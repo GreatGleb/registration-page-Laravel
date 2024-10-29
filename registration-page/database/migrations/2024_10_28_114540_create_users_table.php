@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('photo');
             $table->foreignId('position_id')->constrained('positions')->onDelete('cascade');
+            $table->string('photo');
             $table->timestamps();
         });
     }
