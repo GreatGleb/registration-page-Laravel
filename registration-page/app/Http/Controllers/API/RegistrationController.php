@@ -127,11 +127,12 @@ class RegistrationController extends Controller
 
                     if ($imageSize <= 5 * 1024 * 1024) {
                         if ($imageSizes[0] >= 70 && $imageSizes[1] >= 70) {
-                            //                  save photo
-                            $imageName = 'images/' . time() . '.' . $extension;
+                            // save photo
+                            $imageName = time() . '.' . $extension;
+                            $imagePath = 'images/' . $imageName;
                             Storage::disk('public')->put($imageName, $imageDecodedBase64);
 
-                            $this->newPhotoPath = Storage::disk('public')->path($imageName);
+                            $this->newPhotoPath = '/image/' . $imageName;
                         } else {
                             $this->errors['photo'] = ['Minimum size of photo 70x70px.'];
                         }
