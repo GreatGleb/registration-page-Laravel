@@ -25,6 +25,15 @@
         </style>
     </head>
     <body class="antialiased">
+        <h1>Testing API</h1>
+
+        <div>
+            <a href="{{ route('registration') }}">Registration</a>
+        </div>
+        <div>
+            <a href="{{ route('users') }}">Users</a>
+        </div>
+
         <h1>List of users</h1>
 
         <table class="users">
